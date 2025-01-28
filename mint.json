@@ -47,12 +47,12 @@
       "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/agent-swarm", "architecture/low-latency-network"] 
     },
     {
-      "group": "DAO",
-      "pages": ["dao/overview", "dao/community"] 
-    },
-    {
       "group": "Application layer",
       "pages": ["application-layer/the-terminal", "application-layer/proprietary-apps"] 
+    },
+    {
+      "group": "DAO",
+      "pages": ["dao/overview", "dao/community"] 
     },
     {
       "group": "API Documentation",
