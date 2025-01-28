@@ -35,12 +35,16 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "the-problem", "mission-and-vision", "team"]
+      "group": "Fundamentals",
+      "pages": ["overview", "problem-and-solution", "mission-and-vision", "the-team"]
     },
     {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation", "essentials/reusable-snippets"]
+      "group": "Tokenomics",
+      "pages": ["tokenomics/model", "tokenomics/distribution", "tokenomics/business-model"] 
+    },
+    {
+      "group": "Architecture",
+      "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/agent-swarm"] 
     },
     {
       "group": "API Documentation",
