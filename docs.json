@@ -82,12 +82,20 @@
         {
           "anchor": "Twitter",
           "href": "https://x.com/quantpilotapp",
-          "icon": "twitter"
+          "icon": "twitter",
+          "color": {
+            "from": "#F3CD7A",
+            "to": "#EA7FEE"
+          }
         },
         {
           "anchor": "Telegram",
           "href": "https://t.me/+yrnW1epiE6A4Nzg0",
-          "icon": "telegram"
+          "icon": "telegram",
+          "color": {
+            "from": "#F3CD7A",
+            "to": "#EA7FEE"
+          }
         }
       ]
     }
