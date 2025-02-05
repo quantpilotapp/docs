@@ -6,6 +6,12 @@
     "strict": true
   },
   "name": "QuantPilot",
+  "background": {
+    "color": {
+      "light": "#111111",
+      "dark": "#111111"
+    }
+  },
   "colors": {
     "primary": "#EA7FEE",
     "dark": "#EA7FEE",
