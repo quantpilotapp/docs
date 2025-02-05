@@ -1,6 +1,10 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
   "name": "QuantPilot",
   "colors": {
     "primary": "#EA7FEE",
@@ -77,7 +81,7 @@
         {
           "anchor": "Telegram",
           "href": "https://t.me/+yrnW1epiE6A4Nzg0",
-          "icon": "Telegram"
+          "icon": "telegram"
         }
       ]
     }
