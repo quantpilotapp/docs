@@ -7,7 +7,10 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#EA7FEE"
+    "primary": {
+      "from": "#F3CD7A",
+      "to": "#EA7FEE"
+    }
   },
   "tabs": [
     {
@@ -55,6 +58,4 @@
   ],
   "footerSocials": {
     "x": "https://x.com/quantpilotapp",
-    "telegram": "https://t.me/+yrnW1epiE6A4Nzg0"
-  }
-}
+    "telegram": "https://t.me/+yrnW1epiE6A
