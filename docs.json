@@ -3,9 +3,11 @@
   "theme": "mint",
   "name": "QuantPilot",
   "colors": {
-    "primary": "#EA7FEE"
+    "primary": "#EA7FEE",
+    "dark": "#EA7FEE",
+    "light": "#EA7FEE"
   },
-  "favicon": { "light": "/favicon.svg", "dark": "/favicon-dark.svg" },
+  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
@@ -13,23 +15,43 @@
         "groups": [
           {
             "group": "Fundamentals",
-            "pages": ["overview", "problem-and-solution", "vision", "the-team"]
+            "pages": [
+              "overview",
+              "problem-and-solution",
+              "vision",
+              "the-team"
+            ]
           },
           {
             "group": "Tokenomics",
-            "pages": ["tokenomics/model", "tokenomics/distribution", "tokenomics/business-model"]
+            "pages": [
+              "tokenomics/model",
+              "tokenomics/distribution",
+              "tokenomics/business-model"
+            ]
           },
           {
             "group": "Architecture",
-            "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm"]
+            "pages": [
+              "architecture/data-lake",
+              "architecture/AI-models",
+              "architecture/low-latency-network",
+              "architecture/agent-swarm"
+            ]
           },
           {
             "group": "Application layer",
-            "pages": ["application-layer/the-terminal", "application-layer/proprietary-apps"]
+            "pages": [
+              "application-layer/the-terminal",
+              "application-layer/proprietary-apps"
+            ]
           },
           {
             "group": "DAO",
-            "pages": ["dao/overview", "dao/community"]
+            "pages": [
+              "dao/overview",
+              "dao/community"
+            ]
           }
         ]
       },
@@ -38,7 +60,9 @@
         "groups": [
           {
             "group": "API Documentation",
-            "pages": ["api-reference/introduction"]
+            "pages": [
+              "api-reference/introduction"
+            ]
           }
         ]
       }
