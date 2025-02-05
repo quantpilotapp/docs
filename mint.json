@@ -7,11 +7,11 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
+    "primary": "#EA7FEE",
     "light": "#07C983",
-    "dark": "#0D9373",
+    "dark": "#EA7FEE",
     "anchors": {
-      "from": "#0D9373",
+      "from": "#EA7FEE",
       "to": "#07C983"
     }
   },
@@ -36,46 +36,27 @@
   "navigation": [
     {
       "group": "Fundamentals",
-      "pages": [
-        "overview",
-        "problem-and-solution",
-        "vision",
-        "the-team",
-        "essentials/settings"
-      ]
+      "pages": ["overview", "problem-and-solution", "vision", "the-team"]
     },
     {
       "group": "Tokenomics",
-      "pages": ["tokenomics/tokenomics-model", "tokenomics/token-distribution", "tokenomics/business-model","tokenomics/tokenomics-intro","tokenomics/ecosystem-apps"]
+      "pages": ["tokenomics/model", "tokenomics/distribution", "tokenomics/business-model"]
     },
     {
       "group": "Architecture",
-      "pages": [
-        "architecture/data-lake",
-        "architecture/AI-models",
-        "architecture/low-latency-network",
-        "architecture/agent-swarm"
-      ]
+      "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm"]
     },
     {
       "group": "Application layer",
-      "pages": [
-        "application-layer/the-terminal",
-        "application-layer/proprietary-apps"
-      ]
+      "pages": ["application-layer/the-terminal", "application-layer/proprietary-apps"]
     },
     {
       "group": "DAO",
-      "pages": [
-        "dao/overview",
-        "dao/community"
-      ]
+      "pages": ["dao/overview", "dao/community"]
     },
     {
       "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      "pages": ["api-reference/introduction"]
     }
   ],
   "footerSocials": {
