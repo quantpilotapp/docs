@@ -1,0 +1,93 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "QuantPilot",
+  "colors": {
+    "primary": "#EA7FEE"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Fundamentals",
+            "pages": [
+              "overview",
+              "problem-and-solution",
+              "vision",
+              "the-team"
+            ]
+          },
+          {
+            "group": "Tokenomics",
+            "pages": [
+              "tokenomics/model",
+              "tokenomics/distribution",
+              "tokenomics/business-model"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/data-lake",
+              "architecture/AI-models",
+              "architecture/low-latency-network",
+              "architecture/agent-swarm"
+            ]
+          },
+          {
+            "group": "Application layer",
+            "pages": [
+              "application-layer/the-terminal",
+              "application-layer/proprietary-apps"
+            ]
+          },
+          {
+            "group": "DAO",
+            "pages": [
+              "dao/overview",
+              "dao/community"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Twitter",
+          "href": "https://x.com/quantpilotapp",
+          "icon": "twitter"
+        },
+        {
+          "anchor": "Telegram",
+          "href": "https://t.me/+yrnW1epiE6A4Nzg0",
+          "icon": "Telegram"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/quantpilotapp",
+      "telegram": "https://t.me/+yrnW1epiE6A4Nzg0"
+    }
+  }
+}
