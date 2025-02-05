@@ -7,10 +7,7 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": {
-      "from": "#F3CD7A",
-      "to": "#EA7FEE"
-    }
+    "primary": "#EA7FEE"
   },
   "tabs": [
     {
