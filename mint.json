@@ -40,7 +40,7 @@
     },
     {
       "group": "Tokenomics",
-      "pages": ["tokenomics/model", "tokenomics/distribution", "tokenomics/business-model"]
+      "pages": ["tokenomics/tokenomics-model", "tokenomics/token-distribution", "tokenomics/business-model"]
     },
     {
       "group": "Architecture",
