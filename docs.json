@@ -35,9 +35,11 @@
           {
             "group": "Tokenomics",
             "pages": [
-              "tokenomics/model",
-              "tokenomics/distribution",
-              "tokenomics/business-model"
+              "tokenomics/business-model",
+              "tokenomics/ecosystem-apps",
+              "tokenomics/token-distribution",
+              "tokenomics/tokenomics-intro",
+              "tokenomics/tokenomics-model",
             ]
           },
           {
