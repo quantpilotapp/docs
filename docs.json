@@ -39,7 +39,7 @@
               "tokenomics/ecosystem-apps",
               "tokenomics/token-distribution",
               "tokenomics/tokenomics-intro",
-              "tokenomics/tokenomics-model",
+              "tokenomics/tokenomics-model"
             ]
           },
           {
@@ -84,21 +84,13 @@
         {
           "anchor": "Twitter",
           "href": "https://x.com/quantpilotapp",
-          "icon": "twitter",
-          "color": {
-            "from": "#F3CD7A",
-            "to": "#EA7FEE"
-          }
+          "icon": "twitter"
         },
         {
           "anchor": "Telegram",
           "href": "https://t.me/+yrnW1epiE6A4Nzg0",
-          "icon": "telegram",
-          "color": {
-            "from": "#F3CD7A",
-            "to": "#EA7FEE"
+          "icon": "telegram"
           }
-        }
       ]
     }
   },
