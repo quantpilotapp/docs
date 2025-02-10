@@ -43,7 +43,16 @@
             ]
           },
 
-
+ {
+            "group": "Tokenomics",
+            "pages": [
+              "tokenomics/tokenomics-intro",
+              "tokenomics/business-model",
+              "tokenomics/tokenomics-model",
+              "tokenomics/ecosystem-apps",
+              "tokenomics/token-distribution",
+            ]
+          },
           
           {
             "group": "Application layer",
