@@ -32,7 +32,6 @@
               "the-team"
             ]
           },
-         
           {
             "group": "Architecture",
             "pages": [
@@ -42,8 +41,7 @@
               "architecture/agent-swarm"
             ]
           },
-
- {
+           {
             "group": "Tokenomics",
             "pages": [
               "tokenomics/business-model",
@@ -53,7 +51,6 @@
               "tokenomics/tokenomics-model",
             ]
           },
-          
           {
             "group": "Application layer",
             "pages": [
