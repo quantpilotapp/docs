@@ -25,23 +25,13 @@
         "groups": [
           {
             "group": "Fundamentals",
-            "pages": [
-              "overview",
-              "problem-and-solution",
-              "vision",
-              "theteam"
-            ]
+            "pages": ["overview", "problem-and-solution", "vision", "team"]
           },
           {
             "group": "Architecture",
-            "pages": [
-              "architecture/data-lake",
-              "architecture/AI-models",
-              "architecture/low-latency-network",
-              "architecture/agent-swarm"
-            ]
+            "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm"]
           },
-           {
+          {
             "group": "Tokenomics",
             "pages": [
               "tokenomics/tokenomics-intro",
@@ -63,10 +53,7 @@
           },
           {
             "group": "DAO",
-            "pages": [
-              "dao/overview",
-              "dao/community"
-            ]
+            "pages": ["dao/overview", "dao/community"]
           }
         ]
       },
@@ -75,9 +62,7 @@
         "groups": [
           {
             "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       }
@@ -93,7 +78,7 @@
           "anchor": "Telegram",
           "href": "https://t.me/+yrnW1epiE6A4Nzg0",
           "icon": "telegram"
-          }
+        }
       ]
     }
   },
