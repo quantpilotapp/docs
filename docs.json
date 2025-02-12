@@ -55,7 +55,10 @@
             "group": "Application layer",
             "pages": [
               "application-layer/the-terminal",
-              "application-layer/degen"
+              "application-layer/degen",
+              "application-layer/gary",
+              "application-layer/yield",
+              "application-layer/celeb"
             ]
           },
           {
