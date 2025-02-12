@@ -45,10 +45,10 @@
             "group": "Tokenomics",
             "pages": [
               "tokenomics/tokenomics-intro",
+              "tokenomics/tokenomics-model"
               "tokenomics/business-model",
               "tokenomics/ecosystem-apps",
-              "tokenomics/token-distribution",
-              "tokenomics/tokenomics-model"
+              "tokenomics/token-distribution"
             ]
           },
           {
