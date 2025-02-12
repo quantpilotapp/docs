@@ -17,7 +17,7 @@
     "dark": "#EA7FEE",
     "light": "#EA7FEE"
   },
-  "favicon": "/favicon.svg",
+  "favicon": { "light": "/favicon.svg", "dark": "/favicon-dark.svg" },
   "navigation": {
     "tabs": [
       {
