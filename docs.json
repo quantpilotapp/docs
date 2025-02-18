@@ -24,6 +24,10 @@
         "tab": "Documentation",
         "groups": [
           {
+            "group": "TLDR",
+            "pages": ["simple-summary"]
+          },
+          {
             "group": "Fundamentals",
             "pages": ["overview", "problem-and-solution", "vision", "team"]
           },
