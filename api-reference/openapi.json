@@ -5,19 +5,66 @@
     "version": "1.0.0",
     "description": "MarketOS API"
   },
-  "servers": [
+  "servers": [{ "url": "https://api.quantpilot.ai" }],
+  
+  "tags": [
     {
-      "url": "https://api.quantpilot.ai/chains/{chainEnum}",
-      "variables": {
-        "chainEnum": {
-          "default": "eth",
-          "description": "Blockchain chain enum (e.g. eth, bsc, etc.)"
-        }
-      }
+      "name": "Tokens",
+      "description": "Token-related operations including basic and detailed information"
+    },
+    {
+      "name": "Social",
+      "description": "Social data operations including followers and posts"
+    },
+    {
+      "name": "Analytics",
+      "description": "Analytics and metrics for tokens including leaderboards and growth metrics"
     }
   ],
+  
   "paths": {
-    "/tokens/{token_address}": {
+    "/api/tokens": {
+      "get": {
+        "summary": "Get list of tokens",
+        "description": "Returns a paginated list of tokens.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenList"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Tokens"]
+      }
+    },
+    "/api/tokens/{token_address}": {
       "get": {
         "tags": ["Tokens"],
         "summary": "Get token details",
@@ -44,7 +91,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Tokens"]
       }
     },
     "/tokens/{token_address}/followers": {
@@ -105,7 +153,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Social"]
       }
     },
     "/tokens/{token_address}/posts": {
@@ -155,7 +204,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Social"]
       }
     },
     "/analytics/tokens/leaderboard": {
@@ -195,12 +245,43 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/analytics/tokens/holders-growth": {
       "get": {
-        "tags": ["Analytics"],
+        "summary": "Get tokens sorted by impressions to market cap ratio",
+        "description": "Returns tokens sorted by the ratio of impressions to market cap.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items to return",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpressionsToMarketCapList"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Analytics"]
+      }
+    },
+    "/api/analytics/tokens/holders-growth": {
+      "get": {
         "summary": "Get tokens by holders growth",
         "description": "Returns tokens sorted by holders growth.",
         "parameters": [
@@ -226,7 +307,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/analytics/tokens/smart-engagement": {
@@ -257,7 +339,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/analytics/tokens/market-cap": {
@@ -288,13 +371,32 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     }
   },
   "components": {
     "schemas": {
-      "Token": {
+      "PaginationParams": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "example": 20
+          },
+          "total": {
+            "type": "integer",
+            "example": 1471
+          }
+        }
+      },
+      
+      "TokenBase": {
         "type": "object",
         "properties": {
           "token_address": {
@@ -308,33 +410,62 @@
           "name": {
             "type": "string",
             "example": "Bankr"
-          },
-          "price": {
-            "type": "number",
-            "example": 50.21
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 20000000
-          },
-          "followers": {
-            "type": "integer",
-            "example": 21000
-          },
-          "smart_followers": {
-            "type": "integer",
-            "example": 180
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 64199
-          },
-          "smart_reach": {
-            "type": "integer",
-            "example": 74726
           }
         }
       },
+      
+      "Token": {
+        "allOf": [
+          { "$ref": "#/components/schemas/TokenBase" },
+          {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "number",
+                "example": 50.21
+              },
+              "market_cap": {
+                "type": "number",
+                "example": 20000000
+              },
+              "followers": {
+                "type": "integer",
+                "example": 21000
+              },
+              "smart_followers": {
+                "type": "integer",
+                "example": 180
+              },
+              "impressions": {
+                "type": "integer",
+                "example": 64199
+              },
+              "smart_reach": {
+                "type": "integer",
+                "example": 74726
+              }
+            }
+          }
+        ]
+      },
+
+      "TokenList": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PaginationParams" },
+          {
+            "type": "object",
+            "properties": {
+              "tokens": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        ]
+      },
+
       "DetailedToken": {
         "allOf": [
           {
@@ -675,6 +806,37 @@
               "$ref": "#/components/schemas/MarketCap"
             }
           }
+        }
+      }
+    },
+    "parameters": {
+      "tokenAddress": {
+        "name": "token_address",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique token address"
+      },
+      "paginationPage": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 1
+        }
+      },
+      "paginationLimit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Number of items per page",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 20
         }
       }
     }
