@@ -1,15 +1,11 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Tokens API",
+    "title": "QuantPilot API",
     "version": "1.0.0",
-    "description": "API for tokens that consolidates both social and on-chain data. Each token is uniquely identified by its token_address."
+    "description": "MarketOS API"
   },
-  "servers": [
-    {
-      "url": "https://api.example.com"
-    }
-  ],
+  "servers": [{ "url": "https://api.quantpilot.ai" }],
   "paths": {
     "/api/tokens": {
       "get": {
