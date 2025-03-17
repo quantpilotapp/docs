@@ -1,807 +1,88 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Tokens API",
-    "version": "1.0.0",
-    "description": "API for tokens that consolidates both social and on-chain data. Each token is uniquely identified by its token_address."
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "appearance": {
+    "default": "dark",
+    "strict": true
   },
-  "servers": [
-    {
-      "url": "https://api.example.com"
-    }
-  ],
-  "paths": {
-    "/api/tokens": {
-      "get": {
-        "summary": "Get list of tokens",
-        "description": "Returns a paginated list of tokens.",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/tokens/{token_address}": {
-      "get": {
-        "summary": "Get token details",
-        "description": "Returns detailed information for a token.",
-        "parameters": [
-          {
-            "name": "token_address",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Unique token address"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DetailedToken"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/tokens/{token_address}/followers": {
-      "get": {
-        "summary": "Get token followers",
-        "description": "Returns a paginated list of followers for a token. Use the 'type' query parameter to filter for smart followers.",
-        "parameters": [
-          {
-            "name": "token_address",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Unique token address"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "Type of followers: all or smart",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["all", "smart"],
-              "default": "all"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FollowerList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/tokens/{token_address}/posts": {
-      "get": {
-        "summary": "Get token posts",
-        "description": "Returns a paginated list of posts for a token.",
-        "parameters": [
-          {
-            "name": "token_address",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Unique token address"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/leaderboard": {
-      "get": {
-        "summary": "Get tokens leaderboard",
-        "description": "Returns a leaderboard of tokens sorted by a specified metric.",
-        "parameters": [
-          {
-            "name": "sortBy",
-            "in": "query",
-            "description": "Metric to sort by (e.g. followers, smart_followers, impressions, smart_reach, post_engagement, smart_engagement, market_cap, holders_growth)",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Leaderboard"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/impressions-to-marketcap": {
-      "get": {
-        "summary": "Get tokens sorted by impressions to market cap ratio",
-        "description": "Returns tokens sorted by the ratio of impressions to market cap.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImpressionsToMarketCapList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/holders-growth": {
-      "get": {
-        "summary": "Get tokens by holders growth",
-        "description": "Returns tokens sorted by holders growth.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HoldersGrowthList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/smart-engagement": {
-      "get": {
-        "summary": "Get tokens by smart engagement",
-        "description": "Returns tokens sorted by smart engagement.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SmartEngagementList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/market-cap": {
-      "get": {
-        "summary": "Get tokens by market cap",
-        "description": "Returns tokens sorted by market cap.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MarketCapList"
-                }
-              }
-            }
-          }
-        }
-      }
+  "name": "QuantPilot",
+  "background": {
+    "color": {
+      "light": "#111111",
+      "dark": "#111111"
     }
   },
-  "components": {
-    "schemas": {
-      "Token": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xabc123..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "BANKR"
-          },
-          "name": {
-            "type": "string",
-            "example": "Bankr"
-          },
-          "price": {
-            "type": "number",
-            "example": 50.21
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 20000000
-          },
-          "followers": {
-            "type": "integer",
-            "example": 21000
-          },
-          "smart_followers": {
-            "type": "integer",
-            "example": 180
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 64199
-          },
-          "smart_reach": {
-            "type": "integer",
-            "example": 74726
-          }
-        }
-      },
-      "TokenList": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "limit": {
-            "type": "integer",
-            "example": 20
-          },
-          "total": {
-            "type": "integer",
-            "example": 1471
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Token"
-            }
-          }
-        }
-      },
-      "DetailedToken": {
-        "allOf": [
+  "colors": {
+    "primary": "#EA7FEE",
+    "dark": "#EA7FEE",
+    "light": "#EA7FEE"
+  },
+  "favicon": { "light": "/favicon.svg", "dark": "/favicon-dark.svg" },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
           {
-            "$ref": "#/components/schemas/Token"
+            "group": "TLDR",
+            "pages": ["simple-summary"]
           },
           {
-            "type": "object",
-            "properties": {
-              "post_engagement": {
-                "type": "integer",
-                "example": 2200
-              },
-              "smart_engagement": {
-                "type": "integer",
-                "example": 150
-              },
-              "top_kols": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "kol_address": {
-                      "type": "string",
-                      "example": "0x111222..."
-                    },
-                    "handle": {
-                      "type": "string",
-                      "example": "@DeFiGuru"
-                    },
-                    "followers": {
-                      "type": "integer",
-                      "example": 500000
-                    },
-                    "engagement_rate": {
-                      "type": "number",
-                      "format": "float",
-                      "example": 0.08
-                    }
-                  }
-                }
-              },
-              "smart_follower_distribution": {
-                "type": "object",
-                "properties": {
-                  "whale_holders": {
-                    "type": "integer",
-                    "example": 15
-                  },
-                  "medium_holders": {
-                    "type": "integer",
-                    "example": 150
-                  },
-                  "small_holders": {
-                    "type": "integer",
-                    "example": 1000
-                  }
-                }
-              },
-              "top_posts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Post"
-                }
-              },
-              "holders_distribution": {
-                "type": "object",
-                "properties": {
-                  "top_10_holders": {
-                    "type": "number",
-                    "example": 35.2
-                  },
-                  "top_50_holders": {
-                    "type": "number",
-                    "example": 60.1
-                  }
-                }
-              },
-              "whale_accumulation_trend": {
-                "type": "string",
-                "example": "increasing"
-              }
-            }
+            "group": "Fundamentals",
+            "pages": ["overview", "problem-and-solution", "vision", "team"]
+          },
+          {
+            "group": "Architecture",
+            "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm"]
+          },
+          {
+            "group": "Tokenomics",
+            "pages": [
+              "tokenomics/tokenomics-intro",
+              "tokenomics/tokenomics-model",
+              "tokenomics/token-distribution",
+              "tokenomics/business-model",
+              "tokenomics/ecosystem-apps"
+            ]
+          },
+          {
+            "group": "DAO",
+            "pages": ["dao/overview", "dao/community"]
+          },
+          {
+            "group": "Application layer",
+            "pages": ["application-layer/degen", "application-layer/gary", "application-layer/yield", "application-layer/celeb"]
           }
         ]
       },
-      "Follower": {
-        "type": "object",
-        "properties": {
-          "follower_id": {
-            "type": "string",
-            "example": "f1"
-          },
-          "handle": {
-            "type": "string",
-            "example": "@WhaleMaster"
-          },
-          "wallet_address": {
-            "type": "string",
-            "example": "0x999aaa..."
-          },
-          "follower_type": {
-            "type": "string",
-            "example": "whale"
-          },
-          "estimated_portfolio": {
-            "type": "number",
-            "example": 2500000
-          }
-        }
-      },
-      "FollowerList": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xabc123..."
-          },
-          "type": {
-            "type": "string",
-            "example": "smart"
-          },
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "limit": {
-            "type": "integer",
-            "example": 50
-          },
-          "total": {
-            "type": "integer",
-            "example": 180
-          },
-          "followers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Follower"
-            }
-          }
-        }
-      },
-      "Post": {
-        "type": "object",
-        "properties": {
-          "post_id": {
-            "type": "string",
-            "example": "p1"
-          },
-          "token_address": {
-            "type": "string",
-            "example": "0xdef456..."
-          },
-          "title": {
-            "type": "string",
-            "example": "NEUR Partnership with XYZ"
-          },
-          "link": {
-            "type": "string",
-            "example": "https://social.example.com/neur/post/1"
-          },
-          "published_at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2025-03-10T14:22:00Z"
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 30000
-          },
-          "engagement": {
-            "type": "integer",
-            "example": 1200
-          },
-          "smart_engagement": {
-            "type": "integer",
-            "example": 100
-          }
-        }
-      },
-      "PostList": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xdef456..."
-          },
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "total": {
-            "type": "integer",
-            "example": 50
-          },
-          "posts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Post"
-            }
-          }
-        }
-      },
-      "Leaderboard": {
-        "type": "object",
-        "properties": {
-          "sortBy": {
-            "type": "string",
-            "example": "market_cap"
-          },
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Token"
-            }
-          }
-        }
-      },
-      "ImpressionsToMarketCap": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xdef456..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "NEUR"
-          },
-          "name": {
-            "type": "string",
-            "example": "NEUR"
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 92931
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 52700000
-          },
-          "ratio": {
-            "type": "number",
-            "format": "float",
-            "example": 0.00176
-          }
-        }
-      },
-      "ImpressionsToMarketCapList": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImpressionsToMarketCap"
-            }
-          }
-        }
-      },
-      "HoldersGrowth": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xqqq000..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "QQQ"
-          },
-          "name": {
-            "type": "string",
-            "example": "QQQ Token"
-          },
-          "holders_growth": {
-            "type": "number",
-            "format": "float",
-            "example": 12.5
-          },
-          "price": {
-            "type": "number",
-            "example": 1.15
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 150000000
-          }
-        }
-      },
-      "HoldersGrowthList": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HoldersGrowth"
-            }
-          }
-        }
-      },
-      "SmartEngagement": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xsmart001..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "SMART"
-          },
-          "name": {
-            "type": "string",
-            "example": "Smart Token"
-          },
-          "smart_engagement": {
-            "type": "integer",
-            "example": 150
-          }
-        }
-      },
-      "SmartEngagementList": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SmartEngagement"
-            }
-          }
-        }
-      },
-      "MarketCap": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xmarket001..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "MKTCAP"
-          },
-          "name": {
-            "type": "string",
-            "example": "Market Cap Token"
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 500000000
-          }
-        }
-      },
-      "MarketCapList": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MarketCap"
-            }
-          }
-        }
+      {
+        "tab": "API Reference",
+        "openapi": "/api-reference/openapi.json"
       }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Twitter",
+          "href": "https://x.com/quantpilotapp",
+          "icon": "twitter"
+        },
+        {
+          "anchor": "Telegram",
+          "href": "https://t.me/+yrnW1epiE6A4Nzg0",
+          "icon": "telegram"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/quantpilotapp",
+      "telegram": "https://t.me/+yrnW1epiE6A4Nzg0"
     }
   }
 }
