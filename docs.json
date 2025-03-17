@@ -48,10 +48,6 @@
           {
             "group": "DAO",
             "pages": ["dao/overview", "dao/community"]
-          },
-          {
-            "group": "Application layer",
-            "pages": ["application-layer/degen", "application-layer/gary", "application-layer/yield", "application-layer/celeb"]
           }
         ]
       },
