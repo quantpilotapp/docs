@@ -6,6 +6,22 @@
     "description": "MarketOS API"
   },
   "servers": [{ "url": "https://api.quantpilot.ai" }],
+  
+  "tags": [
+    {
+      "name": "Tokens",
+      "description": "Token-related operations including basic and detailed information"
+    },
+    {
+      "name": "Social",
+      "description": "Social data operations including followers and posts"
+    },
+    {
+      "name": "Analytics",
+      "description": "Analytics and metrics for tokens including leaderboards and growth metrics"
+    }
+  ],
+  
   "paths": {
     "/api/tokens": {
       "get": {
@@ -44,7 +60,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Tokens"]
       }
     },
     "/api/tokens/{token_address}": {
@@ -73,7 +90,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Tokens"]
       }
     },
     "/api/tokens/{token_address}/followers": {
@@ -133,7 +151,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Social"]
       }
     },
     "/api/tokens/{token_address}/posts": {
@@ -182,7 +201,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Social"]
       }
     },
     "/api/analytics/tokens/leaderboard": {
@@ -221,7 +241,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/api/analytics/tokens/impressions-to-marketcap": {
@@ -251,7 +272,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/api/analytics/tokens/holders-growth": {
@@ -281,7 +303,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/api/analytics/tokens/smart-engagement": {
@@ -311,7 +334,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     },
     "/api/analytics/tokens/market-cap": {
@@ -341,54 +365,14 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Analytics"]
       }
     }
   },
   "components": {
     "schemas": {
-      "Token": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xabc123..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "BANKR"
-          },
-          "name": {
-            "type": "string",
-            "example": "Bankr"
-          },
-          "price": {
-            "type": "number",
-            "example": 50.21
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 20000000
-          },
-          "followers": {
-            "type": "integer",
-            "example": 21000
-          },
-          "smart_followers": {
-            "type": "integer",
-            "example": 180
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 64199
-          },
-          "smart_reach": {
-            "type": "integer",
-            "example": 74726
-          }
-        }
-      },
-      "TokenList": {
+      "PaginationParams": {
         "type": "object",
         "properties": {
           "page": {
@@ -402,15 +386,80 @@
           "total": {
             "type": "integer",
             "example": 1471
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Token"
-            }
           }
         }
       },
+      
+      "TokenBase": {
+        "type": "object",
+        "properties": {
+          "token_address": {
+            "type": "string",
+            "example": "0xabc123..."
+          },
+          "symbol": {
+            "type": "string",
+            "example": "BANKR"
+          },
+          "name": {
+            "type": "string",
+            "example": "Bankr"
+          }
+        }
+      },
+      
+      "Token": {
+        "allOf": [
+          { "$ref": "#/components/schemas/TokenBase" },
+          {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "number",
+                "example": 50.21
+              },
+              "market_cap": {
+                "type": "number",
+                "example": 20000000
+              },
+              "followers": {
+                "type": "integer",
+                "example": 21000
+              },
+              "smart_followers": {
+                "type": "integer",
+                "example": 180
+              },
+              "impressions": {
+                "type": "integer",
+                "example": 64199
+              },
+              "smart_reach": {
+                "type": "integer",
+                "example": 74726
+              }
+            }
+          }
+        ]
+      },
+
+      "TokenList": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PaginationParams" },
+          {
+            "type": "object",
+            "properties": {
+              "tokens": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        ]
+      },
+
       "DetailedToken": {
         "allOf": [
           {
@@ -796,6 +845,37 @@
               "$ref": "#/components/schemas/MarketCap"
             }
           }
+        }
+      }
+    },
+    "parameters": {
+      "tokenAddress": {
+        "name": "token_address",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique token address"
+      },
+      "paginationPage": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 1
+        }
+      },
+      "paginationLimit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Number of items per page",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 20
         }
       }
     }
