@@ -66,7 +66,7 @@
     },
     "/api/tokens/{token_address}": {
       "get": {
-        "tags": ["Tokens"],
+        
         "summary": "Get token details",
         "description": "Returns detailed information for a token.",
         "parameters": [
@@ -97,7 +97,7 @@
     },
     "/tokens/{token_address}/followers": {
       "get": {
-        "tags": ["Tokens"],
+        
         "summary": "Get token followers",
         "description": "Returns a paginated list of followers for a token. Use the 'type' query parameter to filter for smart followers.",
         "parameters": [
@@ -159,7 +159,7 @@
     },
     "/tokens/{token_address}/posts": {
       "get": {
-        "tags": ["Tokens"],
+        
         "summary": "Get token posts",
         "description": "Returns a paginated list of posts for a token.",
         "parameters": [
@@ -210,7 +210,7 @@
     },
     "/analytics/tokens/leaderboard": {
       "get": {
-        "tags": ["Analytics"],
+        
         "summary": "Get tokens leaderboard",
         "description": "Returns a leaderboard of tokens sorted by a specified metric.",
         "parameters": [
@@ -313,7 +313,7 @@
     },
     "/analytics/tokens/smart-engagement": {
       "get": {
-        "tags": ["Analytics"],
+       
         "summary": "Get tokens by smart engagement",
         "description": "Returns tokens sorted by smart engagement.",
         "parameters": [
@@ -345,7 +345,7 @@
     },
     "/analytics/tokens/market-cap": {
       "get": {
-        "tags": ["Analytics"],
+       
         "summary": "Get tokens by market cap",
         "description": "Returns tokens sorted by market cap.",
         "parameters": [
