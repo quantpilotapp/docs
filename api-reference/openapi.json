@@ -27,7 +27,7 @@
   ],
   
   "paths": {
-    "/api/tokens": {
+    "/tokens": {
       "get": {
         "summary": "Get list of tokens",
         "description": "Returns a paginated list of tokens.",
@@ -68,7 +68,7 @@
         "tags": ["Tokens"]
       }
     },
-    "/api/tokens/{token_address}": {
+    "/tokens/{token_address}": {
       "get": {
         
         "summary": "Get token details",
@@ -379,7 +379,7 @@
         "tags": ["Analytics"]
       }
     },
-    "/api/technical/{contractAddress}/channel": {
+    "/technical/{contractAddress}/channel": {
       "get": {
         "tags": ["Technical Analysis"],
         "summary": "Get price channel analysis",
@@ -394,7 +394,8 @@
               "type": "string",
               "enum": ["1h", "4h", "1d", "1w"],
               "default": "4h"
-            }
+            },
+            "example": "4h"
           },
           {
             "name": "channelType",
@@ -403,7 +404,8 @@
               "type": "string",
               "enum": ["bollinger", "keltner", "donchian"],
               "default": "bollinger"
-            }
+            },
+            "example": "bollinger"
           }
         ],
         "responses": {
@@ -413,6 +415,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ChannelAnalysis"
+                },
+                "example": {
+                  "upperBound": [2345.67, 2350.12, 2355.85, 2362.44],
+                  "lowerBound": [2290.33, 2295.76, 2301.21, 2310.55],
+                  "middleLine": [2318.00, 2322.94, 2328.53, 2336.50],
+                  "breakoutProbability": 0.73,
+                  "direction": "upward"
                 }
               }
             }
@@ -420,7 +429,7 @@
         }
       }
     },
-    "/api/technical/{contractAddress}/trendline": {
+    "/technical/{contractAddress}/trendline": {
       "get": {
         "tags": ["Technical Analysis"],
         "summary": "Get trendline analysis",
@@ -435,7 +444,8 @@
               "type": "integer",
               "default": 14,
               "description": "Number of periods to analyze"
-            }
+            },
+            "example": 14
           }
         ],
         "responses": {
@@ -444,34 +454,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "trendlines": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "slope": {
-                            "type": "number",
-                            "description": "Slope of the trendline"
-                          },
-                          "intercept": {
-                            "type": "number", 
-                            "description": "Y-intercept of the trendline"
-                          },
-                          "r2": {
-                            "type": "number",
-                            "description": "R-squared value indicating fit quality"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": ["support", "resistance"],
-                            "description": "Whether this is a support or resistance line"
-                          }
-                        }
-                      }
+                  "$ref": "#/components/schemas/TrendlineAnalysis"
+                },
+                "example": {
+                  "trendlines": [
+                    {
+                      "slope": 0.15,
+                      "intercept": 1250.34,
+                      "r2": 0.87,
+                      "type": "support",
+                      "strength": "strong"
+                    },
+                    {
+                      "slope": 0.22,
+                      "intercept": 1450.45,
+                      "r2": 0.82,
+                      "type": "resistance",
+                      "strength": "medium"
                     }
-                  }
+                  ],
+                  "trend": "upward",
+                  "confidence": 0.78
                 }
               }
             }
@@ -479,74 +482,45 @@
         }
       }
     },
-    "/api/inference/trending": {
+    "/technical/{contractAddress}/patterns": {
       "get": {
-        "tags": ["Market Inference"],
-        "summary": "Get trending tokens",
+        "tags": ["Technical Analysis"],
+        "summary": "Detect chart patterns",
         "parameters": [
           {
-            "name": "chain",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["ethereum", "bsc", "arbitrum", "optimism"]
-            }
+            "$ref": "#/components/parameters/contractAddress"
           },
           {
             "name": "timeframe",
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["1h", "24h", "7d"]
-            }
+              "enum": ["1h", "4h", "1d", "1w"],
+              "default": "1d"
+            },
+            "example": "1d"
           }
         ],
         "responses": {
           "200": {
-            "description": "List of trending tokens",
+            "description": "Detected chart patterns",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TrendingTokens"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/{contractAddress}/similar-tokens": {
-      "get": {
-        "tags": ["Market Inference"],
-        "summary": "Find similar tokens",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contractAddress"
-          },
-          {
-            "name": "prompt",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "description": "Additional context for similarity search"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of similar tokens",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "tokens": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Token"
-                      }
+                  "$ref": "#/components/schemas/PatternAnalysis"
+                },
+                "example": {
+                  "patterns": [
+                    {
+                      "name": "double bottom",
+                      "confidence": 0.92,
+                      "completionPercent": 85,
+                      "projectedMovement": 0.15,
+                      "startIndex": 14,
+                      "endIndex": 28
                     }
-                  }
+                  ],
+                  "recommendedAction": "bullish"
                 }
               }
             }
@@ -554,10 +528,10 @@
         }
       }
     },
-    "/api/chains/{chainId}/wallets/{walletAddress}/reallocate": {
-      "post": {
-        "tags": ["Yield"],
-        "summary": "Get yield optimization suggestions",
+    "/chains/{chainId}/{contractAddress}/security/basic": {
+      "get": {
+        "tags": ["Security"],
+        "summary": "Get basic security analysis",
         "parameters": [
           {
             "name": "chainId",
@@ -566,34 +540,42 @@
             "schema": {
               "type": "string",
               "enum": ["eth", "bsc", "arb", "op"]
-            }
+            },
+            "example": "eth"
           },
           {
-            "name": "walletAddress",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/contractAddress"
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReallocationRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Yield optimization suggestions",
+            "description": "Basic security analysis",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/YieldOptimization"
+                  "$ref": "#/components/schemas/BasicSecurity"
+                },
+                "example": {
+                  "verified": true,
+                  "audited": true,
+                  "auditReports": [
+                    {
+                      "auditor": "CertiK",
+                      "date": "2023-12-01",
+                      "link": "https://certik.com/reports/example"
+                    }
+                  ],
+                  "honeypotRisk": "none",
+                  "rugpullRisk": "low",
+                  "maliciousFunctions": [],
+                  "ownerFunctions": [
+                    {
+                      "name": "setFees",
+                      "risk": "medium",
+                      "description": "Allows owner to modify transaction fees"
+                    }
+                  ],
+                  "overallRisk": "low"
                 }
               }
             }
@@ -601,10 +583,10 @@
         }
       }
     },
-    "/api/{contractAddress}/security/bubblemap": {
+    "/{contractAddress}/security/inference": {
       "get": {
         "tags": ["Security"],
-        "summary": "Get security risk bubble map",
+        "summary": "Get security inference analysis",
         "parameters": [
           {
             "$ref": "#/components/parameters/contractAddress"
@@ -612,11 +594,184 @@
         ],
         "responses": {
           "200": {
-            "description": "Security risk bubble map",
+            "description": "Security inference analysis",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SecurityBubbleMap"
+                  "$ref": "#/components/schemas/SecurityInference"
+                },
+                "example": {
+                  "securityScore": 85,
+                  "anomalyDetection": {
+                    "transactionPatterns": {
+                      "score": 90,
+                      "anomalies": []
+                    },
+                    "holderDistribution": {
+                      "score": 85,
+                      "anomalies": ["High concentration in top 10 holders"]
+                    },
+                    "codePatterns": {
+                      "score": 95,
+                      "anomalies": []
+                    }
+                  },
+                  "similarScams": [],
+                  "recommendation": "Token appears secure with standard centralization risks"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{contractAddress}/pools": {
+      "get": {
+        "tags": ["Yield"],
+        "summary": "Get liquidity pools for token",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          },
+          {
+            "name": "minLiquidity",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "description": "Minimum liquidity in USD"
+            },
+            "example": 100000
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of liquidity pools",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PoolList"
+                },
+                "example": {
+                  "pools": [
+                    {
+                      "dex": "Uniswap V3",
+                      "address": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+                      "fee": 0.3,
+                      "token0": {
+                        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                        "symbol": "USDC"
+                      },
+                      "token1": {
+                        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        "symbol": "WETH"
+                      },
+                      "liquidity": 15000000,
+                      "apr": 25.5,
+                      "volume24h": 1200000
+                    }
+                  ],
+                  "totalPoolCount": 5,
+                  "totalLiquidity": 45000000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{contractAddress}/dexes": {
+      "get": {
+        "tags": ["Yield"],
+        "summary": "Get DEX information for token",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of DEXes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DexList"
+                },
+                "example": {
+                  "dexes": [
+                    {
+                      "name": "Uniswap V3",
+                      "chainId": "1",
+                      "volume24h": 1500000,
+                      "poolCount": 3,
+                      "bestPool": {
+                        "address": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+                        "pair": "WETH/USDC",
+                        "liquidity": 15000000
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{contractAddress}/dexes/{dexId}": {
+      "get": {
+        "tags": ["Yield"],
+        "summary": "Get detailed DEX information",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          },
+          {
+            "name": "dexId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "uniswap_v3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed DEX information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DexInfo"
+                },
+                "example": {
+                  "name": "Uniswap V3",
+                  "chainId": "1",
+                  "version": "3.0.0",
+                  "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+                  "factory": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+                  "feeStructure": [
+                    {
+                      "tier": "low",
+                      "fee": 0.05
+                    },
+                    {
+                      "tier": "medium",
+                      "fee": 0.3
+                    },
+                    {
+                      "tier": "high",
+                      "fee": 1.0
+                    }
+                  ],
+                  "totalValueLocked": 500000000,
+                  "pools": [
+                    {
+                      "address": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+                      "pair": "WETH/USDC",
+                      "liquidity": 15000000,
+                      "volume24h": 1200000
+                    }
+                  ]
                 }
               }
             }
@@ -1084,110 +1239,425 @@
           }
         }
       },
-      "TrendingTokens": {
+      "TrendlineAnalysis": {
         "type": "object",
         "properties": {
-          "tokens": {
+          "trendlines": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "address": {
-                  "type": "string"
+                "slope": {
+                  "type": "number",
+                  "description": "Slope of the trendline"
                 },
-                "symbol": {
-                  "type": "string"
+                "intercept": {
+                  "type": "number",
+                  "description": "Y-intercept of the trendline"
                 },
-                "trendScore": {
-                  "type": "number"
+                "r2": {
+                  "type": "number",
+                  "description": "R-squared value indicating fit quality"
                 },
-                "volumeIncrease": {
-                  "type": "number"
-                },
-                "socialMentions": {
-                  "type": "integer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "ReallocationRequest": {
-        "type": "object",
-        "properties": {
-          "tokens": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "address": {
-                  "type": "string"
-                },
-                "amount": {
+                "type": {
                   "type": "string",
-                  "description": "Amount in wei"
+                  "enum": ["support", "resistance"],
+                  "description": "Whether this is a support or resistance line"
+                },
+                "strength": {
+                  "type": "string",
+                  "description": "Strength of the trendline"
                 }
               }
             }
           },
-          "riskTolerance": {
+          "trend": {
             "type": "string",
-            "enum": ["conservative", "moderate", "aggressive"]
+            "description": "Overall trend of the token"
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "description": "Confidence level in the trend analysis"
           }
         }
       },
-      "YieldOptimization": {
+      "PatternAnalysis": {
         "type": "object",
         "properties": {
-          "optimized_tokens": {
+          "patterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the detected pattern"
+                },
+                "confidence": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Confidence level in the pattern detection"
+                },
+                "completionPercent": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Completion percentage of the pattern"
+                },
+                "projectedMovement": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Projected movement percentage"
+                },
+                "startIndex": {
+                  "type": "integer",
+                  "description": "Start index of the pattern"
+                },
+                "endIndex": {
+                  "type": "integer",
+                  "description": "End index of the pattern"
+                }
+              }
+            }
+          },
+          "recommendedAction": {
+            "type": "string",
+            "description": "Recommended action based on the detected patterns"
+          }
+        }
+      },
+      "BasicSecurity": {
+        "type": "object",
+        "properties": {
+          "verified": {
+            "type": "boolean",
+            "description": "Whether the contract is verified on the blockchain explorer"
+          },
+          "audited": {
+            "type": "boolean",
+            "description": "Whether the contract has been audited"
+          },
+          "auditReports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "auditor": {
+                  "type": "string",
+                  "description": "Name of auditor or audit firm"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of audit"
+                },
+                "link": {
+                  "type": "string",
+                  "description": "Link to audit report"
+                }
+              }
+            }
+          },
+          "honeypotRisk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"],
+            "description": "Risk of contract being a honeypot"
+          },
+          "rugpullRisk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"],
+            "description": "Risk of contract being a rug pull"
+          },
+          "maliciousFunctions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Function name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the malicious behavior"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Severity of the issue"
+                }
+              }
+            }
+          },
+          "ownerFunctions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Function name"
+                },
+                "risk": {
+                  "type": "string",
+                  "enum": ["none", "low", "medium", "high", "critical"],
+                  "description": "Risk level of the owner function"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of what the function does"
+                }
+              }
+            }
+          },
+          "overallRisk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"],
+            "description": "Overall risk assessment"
+          }
+        }
+      },
+      "SecurityInference": {
+        "type": "object",
+        "properties": {
+          "securityScore": {
+            "type": "integer",
+            "description": "Overall security score out of 100"
+          },
+          "anomalyDetection": {
+            "type": "object",
+            "properties": {
+              "transactionPatterns": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "description": "Transaction pattern analysis score"
+                  },
+                  "anomalies": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Detected transaction anomalies"
+                  }
+                }
+              },
+              "holderDistribution": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "description": "Holder distribution analysis score"
+                  },
+                  "anomalies": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Detected holder distribution anomalies"
+                  }
+                }
+              },
+              "codePatterns": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "description": "Code pattern analysis score"
+                  },
+                  "anomalies": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Detected code anomalies"
+                  }
+                }
+              }
+            }
+          },
+          "similarScams": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "address": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Address of similar scam token"
                 },
-                "amount": {
-                  "type": "string"
+                "similarity": {
+                  "type": "number",
+                  "description": "Similarity score"
+                },
+                "scamType": {
+                  "type": "string",
+                  "description": "Type of scam"
                 }
               }
-            }
+            },
+            "description": "Similar tokens identified as scams"
           },
-          "total_yield": {
-            "type": "number"
+          "recommendation": {
+            "type": "string",
+            "description": "Security recommendation for users"
           }
         }
       },
-      "SecurityBubbleMap": {
+      "Pool": {
         "type": "object",
         "properties": {
-          "contractRisks": {
+          "address": {
+            "type": "string",
+            "example": "0xabc123..."
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "liquidity": {
+            "type": "number",
+            "description": "Total liquidity in USD"
+          },
+          "apr": {
+            "type": "number",
+            "description": "Annual percentage rate"
+          },
+          "volume24h": {
+            "type": "number",
+            "description": "24-hour trading volume in USD"
+          }
+        }
+      },
+      "PoolList": {
+        "type": "object",
+        "properties": {
+          "pools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pool"
+            }
+          },
+          "totalPoolCount": {
+            "type": "integer",
+            "description": "Total number of pools"
+          },
+          "totalLiquidity": {
+            "type": "number",
+            "description": "Total liquidity across all pools in USD"
+          }
+        }
+      },
+      "DexList": {
+        "type": "object",
+        "properties": {
+          "dexes": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "category": {
-                  "type": "string"
+                "name": {
+                  "type": "string",
+                  "description": "DEX name"
                 },
-                "riskLevel": {
-                  "type": "number"
+                "chainId": {
+                  "type": "string",
+                  "description": "Chain ID where DEX is deployed"
                 },
-                "impact": {
-                  "type": "number"
+                "volume24h": {
+                  "type": "number",
+                  "description": "24-hour trading volume for this token in USD"
                 },
-                "details": {
-                  "type": "string"
+                "poolCount": {
+                  "type": "integer",
+                  "description": "Number of pools with this token"
+                },
+                "bestPool": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Pool contract address"
+                    },
+                    "pair": {
+                      "type": "string",
+                      "description": "Trading pair"
+                    },
+                    "liquidity": {
+                      "type": "number",
+                      "description": "Pool liquidity in USD"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "DexInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "DEX name"
+          },
+          "chainId": {
+            "type": "string",
+            "description": "Chain ID where DEX is deployed"
+          },
+          "version": {
+            "type": "string",
+            "description": "DEX version"
+          },
+          "router": {
+            "type": "string",
+            "description": "Router contract address"
+          },
+          "factory": {
+            "type": "string",
+            "description": "Factory contract address"
+          },
+          "feeStructure": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tier": {
+                  "type": "string",
+                  "description": "Fee tier name"
+                },
+                "fee": {
+                  "type": "number",
+                  "description": "Fee percentage"
                 }
               }
             }
           },
-          "overallRiskScore": {
-            "type": "number"
+          "totalValueLocked": {
+            "type": "number",
+            "description": "Total value locked in USD"
           },
-          "recommendations": {
+          "pools": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "Pool contract address"
+                },
+                "pair": {
+                  "type": "string",
+                  "description": "Trading pair"
+                },
+                "liquidity": {
+                  "type": "number",
+                  "description": "Pool liquidity in USD"
+                },
+                "volume24h": {
+                  "type": "number",
+                  "description": "24-hour trading volume in USD"
+                }
+              }
             }
           }
         }
@@ -1230,7 +1700,8 @@
         "schema": {
           "type": "string"
         },
-        "description": "Token contract address"
+        "description": "Token contract address",
+        "example": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
       }
     }
   }
