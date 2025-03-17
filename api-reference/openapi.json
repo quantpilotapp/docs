@@ -27,6 +27,211 @@
   ],
   
   "paths": {
+        "/yield/optimize": {
+          "post": {
+            "tags": ["Yield"],
+            "summary": "Optimize portfolio yield allocation",
+            "description": "Optimize yield allocation across DeFi protocols for a given portfolio",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": ["tokens"],
+                    "properties": {
+                      "tokens": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "description": "Map of token addresses to amounts in smallest unit (e.g., wei)",
+                        "example": {
+                          "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984": "1000000000000000000",
+                          "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": "5000000000"
+                        }
+                      },
+                      "settings": {
+                        "type": "object",
+                        "properties": {
+                          "riskLevel": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high"],
+                            "default": "medium",
+                            "description": "Risk tolerance level"
+                          },
+                          "chains": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": ["eth", "bsc", "arb", "op"]
+                            },
+                            "description": "Chains to include in optimization",
+                            "default": ["eth", "arb", "op"]
+                          },
+                          "minApy": {
+                            "type": "number",
+                            "description": "Minimum APY to consider (%)",
+                            "default": 3.0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Optimized yield strategy",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "strategies": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "protocol": {
+                                "type": "string",
+                                "description": "Protocol name",
+                                "example": "Aave V3"
+                              },
+                              "chain": {
+                                "type": "string",
+                                "description": "Chain ID",
+                                "example": "eth"
+                              },
+                              "token": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "example": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+                                  },
+                                  "symbol": {
+                                    "type": "string",
+                                    "example": "UNI"
+                                  },
+                                  "amount": {
+                                    "type": "string",
+                                    "description": "Amount in smallest unit",
+                                    "example": "1000000000000000000"
+                                  }
+                                }
+                              },
+                              "apy": {
+                                "type": "number",
+                                "description": "Expected APY (%)",
+                                "example": 12.5
+                              },
+                              "tvl": {
+                                "type": "number",
+                                "description": "Total Value Locked in USD",
+                                "example": 150000000
+                              }
+                            }
+                          }
+                        },
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "totalValueUsd": {
+                              "type": "number",
+                              "description": "Total portfolio value in USD",
+                              "example": 7500.00
+                            },
+                            "estimatedAnnualYieldUsd": {
+                              "type": "number",
+                              "description": "Estimated annual yield in USD",
+                              "example": 825.00
+                            },
+                            "weightedApy": {
+                              "type": "number",
+                              "description": "Weighted average APY",
+                              "example": 11.0
+                            },
+                            "gasEstimateUsd": {
+                              "type": "number",
+                              "description": "Estimated gas cost in USD",
+                              "example": 25.50
+                            }
+                          }
+                        },
+                        "steps": {
+                          "type": "array",
+                          "description": "Steps to implement the strategy",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "action": {
+                                "type": "string",
+                                "example": "Bridge USDC to Arbitrum"
+                              },
+                              "gasEstimateUsd": {
+                                "type": "number",
+                                "example": 12.25
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "example": {
+                      "strategies": [
+                        {
+                          "protocol": "Aave V3",
+                          "chain": "eth",
+                          "token": {
+                            "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+                            "symbol": "UNI",
+                            "amount": "1000000000000000000"
+                          },
+                          "apy": 12.5,
+                          "tvl": 150000000
+                        },
+                        {
+                          "protocol": "Compound V3",
+                          "chain": "arb",
+                          "token": {
+                            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                            "symbol": "USDC",
+                            "amount": "5000000000"
+                          },
+                          "apy": 8.2,
+                          "tvl": 250000000
+                        }
+                      ],
+                      "summary": {
+                        "totalValueUsd": 7500.00,
+                        "estimatedAnnualYieldUsd": 825.00,
+                        "weightedApy": 11.0,
+                        "gasEstimateUsd": 25.50
+                      },
+                      "steps": [
+                        {
+                          "action": "Bridge USDC to Arbitrum",
+                          "gasEstimateUsd": 12.25
+                        },
+                        {
+                          "action": "Deposit UNI to Aave V3",
+                          "gasEstimateUsd": 8.15
+                        },
+                        {
+                          "action": "Deposit USDC to Compound V3",
+                          "gasEstimateUsd": 5.10
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
     "/tokens": {
       "get": {
         "summary": "Get list of tokens",
