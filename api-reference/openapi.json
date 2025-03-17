@@ -3,22 +3,26 @@
   "info": {
     "title": "QuantPilot API",
     "version": "1.0.0",
-    "description": "MarketOS API"
+    "description": "Comprehensive API for token analysis, technical indicators, yield optimization, and security analysis"
   },
   "servers": [{ "url": "https://api.quantpilot.ai" }],
   
   "tags": [
     {
-      "name": "Tokens",
-      "description": "Token-related operations including basic and detailed information"
+      "name": "Technical Analysis",
+      "description": "Technical indicators, patterns, and chart analysis"
     },
     {
-      "name": "Social",
-      "description": "Social data operations including followers and posts"
+      "name": "Market Inference",
+      "description": "Token trends, pump detection, and similar token analysis"
     },
     {
-      "name": "Analytics",
-      "description": "Analytics and metrics for tokens including leaderboards and growth metrics"
+      "name": "Yield",
+      "description": "Yield optimization and pool analysis across chains"
+    },
+    {
+      "name": "Security",
+      "description": "Token security analysis and risk assessment"
     }
   ],
   
@@ -271,7 +275,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ImpressionsToMarketCapList"
+                  "$ref": "#/components/schemas/HoldersGrowthList"
                 }
               }
             }
@@ -373,6 +377,251 @@
           }
         },
         "tags": ["Analytics"]
+      }
+    },
+    "/api/technical/{contractAddress}/channel": {
+      "get": {
+        "tags": ["Technical Analysis"],
+        "summary": "Get price channel analysis",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["1h", "4h", "1d", "1w"],
+              "default": "4h"
+            }
+          },
+          {
+            "name": "channelType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["bollinger", "keltner", "donchian"],
+              "default": "bollinger"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelAnalysis"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/technical/{contractAddress}/trendline": {
+      "get": {
+        "tags": ["Technical Analysis"],
+        "summary": "Get trendline analysis",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 14,
+              "description": "Number of periods to analyze"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trendline analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trendlines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slope": {
+                            "type": "number",
+                            "description": "Slope of the trendline"
+                          },
+                          "intercept": {
+                            "type": "number", 
+                            "description": "Y-intercept of the trendline"
+                          },
+                          "r2": {
+                            "type": "number",
+                            "description": "R-squared value indicating fit quality"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["support", "resistance"],
+                            "description": "Whether this is a support or resistance line"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inference/trending": {
+      "get": {
+        "tags": ["Market Inference"],
+        "summary": "Get trending tokens",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["ethereum", "bsc", "arbitrum", "optimism"]
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["1h", "24h", "7d"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of trending tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendingTokens"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{contractAddress}/similar-tokens": {
+      "get": {
+        "tags": ["Market Inference"],
+        "summary": "Find similar tokens",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          },
+          {
+            "name": "prompt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "description": "Additional context for similarity search"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of similar tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tokens": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chains/{chainId}/wallets/{walletAddress}/reallocate": {
+      "post": {
+        "tags": ["Yield"],
+        "summary": "Get yield optimization suggestions",
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["eth", "bsc", "arb", "op"]
+            }
+          },
+          {
+            "name": "walletAddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReallocationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Yield optimization suggestions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YieldOptimization"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{contractAddress}/security/bubblemap": {
+      "get": {
+        "tags": ["Security"],
+        "summary": "Get security risk bubble map",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contractAddress"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Security risk bubble map",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityBubbleMap"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -807,6 +1056,141 @@
             }
           }
         }
+      },
+      "ChannelAnalysis": {
+        "type": "object",
+        "properties": {
+          "upperBound": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "lowerBound": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "middleLine": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "breakoutProbability": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "TrendingTokens": {
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "trendScore": {
+                  "type": "number"
+                },
+                "volumeIncrease": {
+                  "type": "number"
+                },
+                "socialMentions": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ReallocationRequest": {
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Amount in wei"
+                }
+              }
+            }
+          },
+          "riskTolerance": {
+            "type": "string",
+            "enum": ["conservative", "moderate", "aggressive"]
+          }
+        }
+      },
+      "YieldOptimization": {
+        "type": "object",
+        "properties": {
+          "optimized_tokens": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "total_yield": {
+            "type": "number"
+          }
+        }
+      },
+      "SecurityBubbleMap": {
+        "type": "object",
+        "properties": {
+          "contractRisks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "riskLevel": {
+                  "type": "number"
+                },
+                "impact": {
+                  "type": "number"
+                },
+                "details": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "overallRiskScore": {
+            "type": "number"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "parameters": {
@@ -838,6 +1222,15 @@
           "type": "integer",
           "default": 20
         }
+      },
+      "contractAddress": {
+        "name": "contractAddress",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Token contract address"
       }
     }
   }
