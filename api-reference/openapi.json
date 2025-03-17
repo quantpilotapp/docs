@@ -5,50 +5,21 @@
     "version": "1.0.0",
     "description": "MarketOS API"
   },
-  "servers": [{ "url": "https://api.quantpilot.ai" }],
-  "paths": {
-    "/api/tokens": {
-      "get": {
-        "summary": "Get list of tokens",
-        "description": "Returns a paginated list of tokens.",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenList"
-                }
-              }
-            }
-          }
+  "servers": [
+    {
+      "url": "https://api.quantpilot.ai/chains/{chainEnum}",
+      "variables": {
+        "chainEnum": {
+          "default": "eth",
+          "description": "Blockchain chain enum (e.g. eth, bsc, etc.)"
         }
       }
-    },
-    "/api/tokens/{token_address}": {
+    }
+  ],
+  "paths": {
+    "/tokens/{token_address}": {
       "get": {
+        "tags": ["Tokens"],
         "summary": "Get token details",
         "description": "Returns detailed information for a token.",
         "parameters": [
@@ -76,8 +47,9 @@
         }
       }
     },
-    "/api/tokens/{token_address}/followers": {
+    "/tokens/{token_address}/followers": {
       "get": {
+        "tags": ["Tokens"],
         "summary": "Get token followers",
         "description": "Returns a paginated list of followers for a token. Use the 'type' query parameter to filter for smart followers.",
         "parameters": [
@@ -136,8 +108,9 @@
         }
       }
     },
-    "/api/tokens/{token_address}/posts": {
+    "/tokens/{token_address}/posts": {
       "get": {
+        "tags": ["Tokens"],
         "summary": "Get token posts",
         "description": "Returns a paginated list of posts for a token.",
         "parameters": [
@@ -185,8 +158,9 @@
         }
       }
     },
-    "/api/analytics/tokens/leaderboard": {
+    "/analytics/tokens/leaderboard": {
       "get": {
+        "tags": ["Analytics"],
         "summary": "Get tokens leaderboard",
         "description": "Returns a leaderboard of tokens sorted by a specified metric.",
         "parameters": [
@@ -224,38 +198,9 @@
         }
       }
     },
-    "/api/analytics/tokens/impressions-to-marketcap": {
+    "/analytics/tokens/holders-growth": {
       "get": {
-        "summary": "Get tokens sorted by impressions to market cap ratio",
-        "description": "Returns tokens sorted by the ratio of impressions to market cap.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImpressionsToMarketCapList"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/analytics/tokens/holders-growth": {
-      "get": {
+        "tags": ["Analytics"],
         "summary": "Get tokens by holders growth",
         "description": "Returns tokens sorted by holders growth.",
         "parameters": [
@@ -284,8 +229,9 @@
         }
       }
     },
-    "/api/analytics/tokens/smart-engagement": {
+    "/analytics/tokens/smart-engagement": {
       "get": {
+        "tags": ["Analytics"],
         "summary": "Get tokens by smart engagement",
         "description": "Returns tokens sorted by smart engagement.",
         "parameters": [
@@ -314,8 +260,9 @@
         }
       }
     },
-    "/api/analytics/tokens/market-cap": {
+    "/analytics/tokens/market-cap": {
       "get": {
+        "tags": ["Analytics"],
         "summary": "Get tokens by market cap",
         "description": "Returns tokens sorted by market cap.",
         "parameters": [
@@ -385,29 +332,6 @@
           "smart_reach": {
             "type": "integer",
             "example": 74726
-          }
-        }
-      },
-      "TokenList": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "limit": {
-            "type": "integer",
-            "example": 20
-          },
-          "total": {
-            "type": "integer",
-            "example": 1471
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Token"
-            }
           }
         }
       },
@@ -632,51 +556,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Token"
-            }
-          }
-        }
-      },
-      "ImpressionsToMarketCap": {
-        "type": "object",
-        "properties": {
-          "token_address": {
-            "type": "string",
-            "example": "0xdef456..."
-          },
-          "symbol": {
-            "type": "string",
-            "example": "NEUR"
-          },
-          "name": {
-            "type": "string",
-            "example": "NEUR"
-          },
-          "impressions": {
-            "type": "integer",
-            "example": 92931
-          },
-          "market_cap": {
-            "type": "number",
-            "example": 52700000
-          },
-          "ratio": {
-            "type": "number",
-            "format": "float",
-            "example": 0.00176
-          }
-        }
-      },
-      "ImpressionsToMarketCapList": {
-        "type": "object",
-        "properties": {
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "tokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImpressionsToMarketCap"
             }
           }
         }
