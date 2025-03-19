@@ -584,49 +584,274 @@
         "tags": ["Analytics"]
       }
     },
-    "/technical/{contractAddress}/channel": {
-      "get": {
-        "tags": ["Technical Analysis"],
-        "summary": "Get price channel analysis",
+    "/technical/channel": {
+      "post": {
+        "tags": [
+          "Technical Analysis"
+        ],
+        "summary": "Detect price channels",
+        "description": "Analyzes price data to detect technical channels and optionally sets up webhook alerts",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contractAddress"
+            "name": "contract_address",
+            "in": "query", 
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "So11111111111111111111111111111111111111112",
+            "description": "Token contract address"
           },
           {
-            "name": "timeframe",
+            "name": "chain",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string",
-              "enum": ["1h", "4h", "1d", "1w"],
-              "default": "4h"
+              "enum": [
+                "solana",
+                "ethereum", 
+                "arbitrum",
+                "avalanche",
+                "bsc",
+                "optimism",
+                "polygon",
+                "base",
+                "zksync",
+                "sui"
+              ]
             },
-            "example": "4h"
+            "example": "solana",
+            "description": "Blockchain network"
           },
           {
-            "name": "channelType",
+            "name": "num_candles",
             "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 100,
+              "default": 50
+            },
+            "example": 50,
+            "description": "Number of candles to analyze"
+          },
+          {
+            "name": "candle_width",
+            "in": "query", 
+            "required": false,
             "schema": {
               "type": "string",
-              "enum": ["bollinger", "keltner", "donchian"],
-              "default": "bollinger"
+              "enum": ["5m", "15m", "1H", "4H", "1D", "1W", "1M"],
+              "default": "4H"
             },
-            "example": "bollinger"
+            "example": "4H",
+            "description": "Candle width"
+          },
+          {
+            "name": "strictness",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.5
+            },
+            "example": 0.5,
+            "description": "Strictness of channel detection. Lower is looser."
+          },
+          {
+            "name": "webhook_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": "https://discord.com/api/webhooks/1234567890/abcdefghijklmnopqrstuvwxyz",
+            "description": "URL to receive channel break alerts"
           }
         ],
         "responses": {
           "200": {
-            "description": "Channel analysis results",
+            "description": "Channel detected successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChannelAnalysis"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "channel": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API key"
+          },
+          "403": {
+            "description": "Insufficient permissions"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Technical Analysis"
+        ],
+        "summary": "Deactivate channel alert",
+        "description": "Deactivates an existing channel alert by setting is_active to false",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "webhook_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the webhook alert to deactivate",
+            "example": "abc123def456"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alert deactivated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "message",
+                    "webhook_id"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Alert deactivated successfully"
+                    },
+                    "webhook_id": {
+                      "type": "string",
+                      "example": "abc123def456"
+                    }
+                  }
                 },
                 "example": {
-                  "upperBound": [2345.67, 2350.12, 2355.85, 2362.44],
-                  "lowerBound": [2290.33, 2295.76, 2301.21, 2310.55],
-                  "middleLine": [2318.00, 2322.94, 2328.53, 2336.50],
-                  "breakoutProbability": 0.73,
-                  "direction": "upward"
+                  "message": "Alert deactivated successfully",
+                  "webhook_id": "abc123def456"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing webhook_id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Missing webhook_id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or missing API key"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Insufficient permissions"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alert not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Alert with webhook_id abc123def456 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Error deactivating alert"
+                    }
+                  }
                 }
               }
             }
@@ -634,6 +859,7 @@
         }
       }
     },
+    
     "/technical/{contractAddress}/trendline": {
       "get": {
         "tags": ["Technical Analysis"],
