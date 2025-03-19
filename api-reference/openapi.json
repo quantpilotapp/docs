@@ -3,7 +3,7 @@
   "info": {
     "title": "QuantPilot API",
     "version": "1.0.0",
-    "description": "Comprehensive API for token analysis, technical indicators, yield optimization, and security analysis"
+    "description": "QuantPilot API"
   },
   "servers": [{ "url": "https://api.quantpilot.ai" }],
   
@@ -1438,9 +1438,69 @@
               "type": "number"
             }
           },
+          "quality": {
+            "type": "number",
+            "format": "float"
+          },
           "breakoutProbability": {
             "type": "number",
             "format": "float"
+          },
+          "lowerLine": {
+            "type": "object",
+            "properties": {
+              "slope": {
+                "type": "number"
+              },
+              "intercept": {
+                "type": "number"
+              },
+              "r2": {
+                "type": "number"
+              },
+              "touchPoints": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "number"
+                    },
+                    "price": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "upperLine": {
+            "type": "object",
+            "properties": {
+              "slope": {
+                "type": "number"
+              },
+              "intercept": {
+                "type": "number"
+              },
+              "r2": {
+                "type": "number"
+              },
+              "touchPoints": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "number"
+                    },
+                    "price": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
