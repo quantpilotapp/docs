@@ -687,26 +687,134 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
+                    "current_lower_price": {
+                      "type": "number",
+                      "example": 88.74,
+                      "description": "Current price at lower channel boundary"
                     },
-                    "channel": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
+                    "current_upper_price": {
+                      "type": "number",
+                      "example": 129.81,
+                      "description": "Current price at upper channel boundary"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "channel": {
+                          "type": "object",
+                          "properties": {
+                            "channel_end_idx": {
+                              "type": "integer",
+                              "example": 89
+                            },
+                            "channel_end_timestamp": {
+                              "type": "integer",
+                              "example": 1742688000
+                            },
+                            "channel_start_idx": {
+                              "type": "integer",
+                              "example": 28
+                            },
+                            "channel_start_timestamp": {
+                              "type": "integer",
+                              "example": 1737504000
+                            },
+                            "is_valid": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "lower_intercept": {
+                              "type": "number",
+                              "example": 36838.11
+                            },
+                            "lower_r2": {
+                              "type": "number",
+                              "example": 0.986
+                            },
+                            "lower_slope": {
+                              "type": "number",
+                              "example": -0.000021
+                            },
+                            "lower_touches_ts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "idx": {
+                                    "type": "integer",
+                                    "example": 29
+                                  },
+                                  "price": {
+                                    "type": "number",
+                                    "example": 241.94
+                                  },
+                                  "rank": {
+                                    "type": "integer",
+                                    "example": 4
+                                  },
+                                  "ts": {
+                                    "type": "integer",
+                                    "example": 1737590400
+                                  }
+                                }
+                              }
+                            },
+                            "score": {
+                              "type": "number",
+                              "example": 1.97
+                            },
+                            "upper_intercept": {
+                              "type": "number",
+                              "example": 48010.36
+                            },
+                            "upper_r2": {
+                              "type": "number",
+                              "example": 0.990
+                            },
+                            "upper_slope": {
+                              "type": "number",
+                              "example": -0.000027
+                            },
+                            "upper_touches_ts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "idx": {
+                                    "type": "integer",
+                                    "example": 28
+                                  },
+                                  "price": {
+                                    "type": "number",
+                                    "example": 272.35
+                                  },
+                                  "rank": {
+                                    "type": "integer",
+                                    "example": 12
+                                  },
+                                  "ts": {
+                                    "type": "integer",
+                                    "example": 1737504000
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Base64 encoded image of the channel visualization",
+                          "example": "base64_encoded_image_string"
+                        },
+                        "webhook_registered": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Channel detected"
                     }
                   }
                 }
