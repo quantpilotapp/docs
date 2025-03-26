@@ -690,12 +690,12 @@
                     "current_lower_price": {
                       "type": "number",
                       "example": 88.74,
-                      "description": "Current price at lower channel boundary"
+                      "description": "Current price vs USD at lower channel boundary"
                     },
                     "current_upper_price": {
                       "type": "number",
                       "example": 129.81,
-                      "description": "Current price at upper channel boundary"
+                      "description": "Current price vs USD at upper channel boundary"
                     },
                     "data": {
                       "type": "object",
