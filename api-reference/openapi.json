@@ -363,7 +363,7 @@
             }
           }
         },
-        "tags": ["Social"]
+        "tags": ["Social activity"]
       }
     },
     "/tokens/{token_address}/posts": {
@@ -414,7 +414,7 @@
             }
           }
         },
-        "tags": ["Social"]
+        "tags": ["Social activity"]
       }
     },
     "/analytics/tokens/leaderboard": {
@@ -486,7 +486,7 @@
             }
           }
         },
-        "tags": ["Analytics"]
+        "tags": ["Social activity"]
       }
     },
     "/api/analytics/tokens/holders-growth": {
@@ -549,39 +549,7 @@
             }
           }
         },
-        "tags": ["Analytics"]
-      }
-    },
-    "/analytics/tokens/market-cap": {
-      "get": {
-       
-        "summary": "Get tokens by market cap",
-        "description": "Returns tokens sorted by market cap.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MarketCapList"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Analytics"]
+        "tags": ["Social activity"]
       }
     },
     "/technical/channel": {
