@@ -33,7 +33,7 @@
           },
           {
             "group": "Architecture",
-            "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm"]
+            "pages": ["architecture/data-lake", "architecture/AI-models", "architecture/low-latency-network", "architecture/agent-swarm", "architecture/deepquant"]
           },
           {
             "group": "Tokenomics",
