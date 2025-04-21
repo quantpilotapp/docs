@@ -23,6 +23,10 @@
     {
       "name": "Security",
       "description": "Token security analysis and risk assessment"
+    },
+    {
+      "name": "DeepQuant",
+      "description": "DeepQuant analysis and job management"
     }
   ],
   
@@ -1279,6 +1283,316 @@
                       "volume24h": 1200000
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deepquant/jobs": {
+      "post": {
+        "tags": ["DeepQuant"],
+        "summary": "Start a new DeepQuant job",
+        "description": "Initiates a new DeepQuant analysis job based on the provided prompt",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "Analysis prompt/instructions",
+                    "example": "Analyze BTC price action and volume patterns"
+                  },
+                  "async": {
+                    "type": "boolean",
+                    "description": "Whether to run the job asynchronously",
+                    "default": true
+                  }
+                },
+                "required": ["prompt"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job started successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "string",
+                      "example": "dq_123456"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["queued", "running"],
+                      "example": "queued"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["DeepQuant"],
+        "summary": "Get list of active jobs",
+        "description": "Returns a list of currently running DeepQuant jobs",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of active jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "job_id": {
+                        "type": "string",
+                        "example": "dq_123456"
+                      },
+                      "started_at": {
+                        "type": "integer",
+                        "description": "Unix timestamp",
+                        "example": 1678901234
+                      },
+                      "tokens_used": {
+                        "type": "integer",
+                        "example": 1234
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deepquant/jobs/history": {
+      "get": {
+        "tags": ["DeepQuant"],
+        "summary": "Get past jobs",
+        "description": "Returns a list of completed or terminated DeepQuant jobs",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of past jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "job_id": {
+                        "type": "string",
+                        "example": "dq_123456"
+                      },
+                      "started_at": {
+                        "type": "integer",
+                        "description": "Unix timestamp",
+                        "example": 1678901234
+                      },
+                      "ended_at": {
+                        "type": "integer",
+                        "description": "Unix timestamp",
+                        "example": 1678902234
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["completed", "terminated"],
+                        "example": "completed"
+                      },
+                      "tokens_used": {
+                        "type": "integer",
+                        "example": 2345
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deepquant/jobs/{job_id}": {
+      "get": {
+        "tags": ["DeepQuant"],
+        "summary": "Get job details",
+        "description": "Returns detailed information about a specific DeepQuant job",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "dq_123456"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "string",
+                      "example": "dq_123456"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["queued", "running", "completed", "terminated"],
+                      "example": "running"
+                    },
+                    "tokens_used": {
+                      "type": "integer",
+                      "example": 1234
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "task_id": {
+                            "type": "string",
+                            "example": "task_789"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["pending", "running", "completed", "skipped", "failed"],
+                            "example": "running"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Analyzing price patterns"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["DeepQuant"],
+        "summary": "Terminate job",
+        "description": "Terminates a running DeepQuant job",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "dq_123456"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job terminated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Job terminated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deepquant/jobs/{job_id}/tasks/{task_id}/skip": {
+      "post": {
+        "tags": ["DeepQuant"],
+        "summary": "Skip task",
+        "description": "Skips a specific task in a DeepQuant job",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "dq_123456"
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "task_789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task skipped successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Task skipped"
+                    }
+                  }
                 }
               }
             }
