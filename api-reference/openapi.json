@@ -649,6 +649,17 @@
             },
             "example": "https://discord.com/api/webhooks/1234567890/abcdefghijklmnopqrstuvwxyz",
             "description": "URL to receive channel break alerts"
+          },
+          {
+            "name": "draw_plot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true,
+            "description": "Return plot image of channels"
           }
         ],
         "responses": {
